@@ -10,20 +10,6 @@ import javafx.stage.Stage;
 import java.io.InputStream;
 import javafx.scene.control.Button;
 
-class newGame {
-    Stage primStage;
-    Button gameButton;
-
-    newGame(Stage primaryStage, Button newGameButton) {
-        this.primStage = primaryStage;
-        this.gameButton = newGameButton;
-    }
-    public void changeButtonText() {
-        gameButton.setText("Game Play");
-        primStage.show();
-    }
-}
-
 public class Main extends Application {
     public void mainIcon(Stage primaryStage) {
         InputStream mainIconStream = getClass().getResourceAsStream("/main_icon.png");
@@ -50,12 +36,14 @@ public class Main extends Application {
         newGameBtn.setLayoutX(400);
         newGameBtn.setLayoutY(400);
 
+        dinoBody dinoBody = new dinoBody(primaryStage);
+
+        root.getChildren().add(dinoBody);
         primaryStage.show();
         newGameBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                newGame changer = new newGame(primaryStage, newGameBtn);
-                changer.changeButtonText();
+                dinoBody.activator();
             }
         });
     }
