@@ -38,10 +38,6 @@ public class spriteAnimation extends Transition {
         if (index != lastIndex) {
             final int x = (index % count) * width  + offsetX;
             final int y = 1;
-            System.out.println(Integer.toString(x));
-            System.out.println(Integer.toString(y));
-            System.out.println(Integer.toString(index));
-            System.out.println(Double.toString(k));
             imageView.setViewport(new Rectangle2D(x, y, width, height));
             lastIndex = index;
         }

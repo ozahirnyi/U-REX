@@ -14,15 +14,12 @@ public class dinoBody extends Pane{
   private static final Image IMAGE = new Image("dino_body.jpeg");
   private static final int COLUMNS = 1;
   private static final int COUNT = 4;
-  private static final int OFFSET_X = 1;
+  private static final int OFFSET_X = 0;
   private static final int OFFSET_Y = 0;
   private static final int WIDTH = 88;
   private static final int HEIGHT = 143;
-  private static Stage primStage;
 
-  dinoBody(Stage primaryStage) {
-    primStage = primaryStage;
-  }
+  dinoBody() { }
 
   public void activator() {
     final ImageView imageView = new ImageView(IMAGE);
@@ -30,13 +27,12 @@ public class dinoBody extends Pane{
 
     final Animation animation =
         new spriteAnimation(
-            imageView, Duration.millis(500),
+            imageView, Duration.millis(600),
                 COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
     animation.setCycleCount(Animation.INDEFINITE);
     animation.play();
-    primStage.setScene(new Scene(new Group(imageView), 1200, 800));
-
-      imageView.setLayoutX(25);
-      imageView.setLayoutY(650);
+    imageView.setLayoutX(25);
+    imageView.setLayoutY(650);
+    getChildren().add(imageView);
   }
 }
