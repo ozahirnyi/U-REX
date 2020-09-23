@@ -36,6 +36,8 @@ public class spriteAnimation extends Transition {
     protected void interpolate(double k) {
         final int index = Math.min((int) Math.floor(k * count), count - 1);
         if (index != lastIndex) {
+            double check = 900 - (Main.speed * 999);
+            System.out.println(check);
             final int x = (index % count) * width  + offsetX;
             final int y = 1;
             imageView.setViewport(new Rectangle2D(x, y, width, height));

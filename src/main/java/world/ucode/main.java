@@ -14,6 +14,9 @@ public class Main extends Application {
     static public Pane root = new Pane();
     static public Stage primStage;
     static public Button newGameButton = new Button();
+    static public int maxLandX;
+    static public double speed = 0.4;
+    static public int lastLand = 100;
 
     public void mainIcon(Stage primaryStage) {
         InputStream mainIconStream = getClass().getResourceAsStream("/main_icon.png");
@@ -31,13 +34,13 @@ public class Main extends Application {
         setTitle(primaryStage);
         primStage = primaryStage;
 
-        newGame newGame = new newGame();
-        newGame.windowCreator();
+        windowCreator windowCreator = new windowCreator();
+        windowCreator.sceneCreator();
 
         newGameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                root.setStyle("-fx-background-color: Red;");
+                root.getChildren().remove(newGameButton);
             }
         });
     }
