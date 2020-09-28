@@ -6,9 +6,11 @@ import javafx.scene.input.KeyCode;
 
 public class WindowCreator {
     static final private ArrayList<GroundCreator> lands = new ArrayList<>();
+    static final private ArrayList<CactusCreator> cactuses = new ArrayList<>();
+    static public int lastCactusX = 40;
     int windowLastLand = Main.lastLand;
     private int dinoMaxJump = 0;
-    private int dinoGravity = 1;
+    static final private int dinoGravity = 1;
 
     public void sceneCreator() {
         newGameBtnCreator();
@@ -20,6 +22,7 @@ public class WindowCreator {
         Main.root.getChildren().add(dinoBody);
 
         landsCreator();
+        cactusesCreator();
         dinoBody.toFront();
 
     AnimationTimer animationTimer =
@@ -34,11 +37,12 @@ public class WindowCreator {
                       && dinoBody.getTranslateY() == dinoBody.landY) dinoJump(dinoBody);
                 });
             dinoBody.setTranslateY(dinoBody.getTranslateY() - dinoMaxJump);
-            dinoDown(dinoBody);
+            dinoDown();
             if (dinoBody.getTranslateY() >= dinoBody.landY) {
               dinoMaxJump = 0;
               dinoBody.setTranslateY(dinoBody.landY);
             }
+            cactusMover();
             landsMover();
           }
         };
@@ -55,12 +59,20 @@ public class WindowCreator {
         dinoMaxJump = 20;
     }
 
-    private void dinoDown(DinoBody dinoBody) {
+    private void dinoDown() {
         dinoMaxJump -= dinoGravity;
     }
 
     private void cactusMover() {
-
+        for (int i = 0; i < 15; i++) {
+            CactusCreator cactusCreator = cactuses.get(i);
+            cactusCreator.cactusX -= 10 * Main.speed;
+            if (cactusCreator.cactusX < -71) {
+                cactusCreator.cactusX = cactusXgenerator(lastCactusX);
+                lastCactusX = (int)cactusCreator.cactusX;
+            }
+            cactusCreator.setTranslateX(cactusCreator.cactusX);
+        }
     }
 
     private void landsMover() {
@@ -72,24 +84,31 @@ public class WindowCreator {
             land.setTranslateX(land.landX);
         }
         windowLastLand--;
-        if (windowLastLand == 0) {
+        if (windowLastLand == 0 && Main.speed < 2) {
             Main.speed += 0.03;
             windowLastLand = Main.lastLand;
         }
     }
 
-    private void cactusCreator() {
-        for (int i = 0; i < 34; i++) {
-
+    private void cactusesCreator() {
+        for (int i = 0; i < 15; i++) {
+            int randomXcactus = cactusXgenerator(lastCactusX + (i * 10));
+            CactusCreator cactusCreator = new CactusCreator(randomXcactus);
+            lastCactusX = randomXcactus;
+            cactusCreator.setTranslateX(lastCactusX);
+            cactuses.add(cactusCreator);
+            if (i == 14)
+                lastCactusX = (int)cactusCreator.cactusX;
         }
+        Main.root.getChildren().addAll(cactuses);
     }
 
     private void landsCreator() {
         for (int i = 0; i < Main.lastLand; i++) {
-            GroundCreator groundCreator = new GroundCreator(66 * i);
+            GroundCreator groundCreator = new GroundCreator(71 * i);
             lands.add(groundCreator);
         }
-        Main.maxLandX = 66 * 98;
+        Main.maxLandX = 71 * 71;
         Main.root.getChildren().addAll(lands);
     }
 
@@ -97,6 +116,10 @@ public class WindowCreator {
         Main.newGameButton.setText("New Game");
         Main.newGameButton.setLayoutX(525);
         Main.newGameButton.setLayoutY(300);
+    }
+
+    static public int cactusXgenerator(int lastCactusX) {
+        return (int)(lastCactusX + (450 + Math.random() * 1000));
     }
 
 }

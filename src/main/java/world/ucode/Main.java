@@ -16,8 +16,8 @@ public class Main extends Application {
     static public Stage primStage;
     static public Button newGameButton = new Button();
     static public int maxLandX;
-    static public double speed = 0.3;
-    static public int lastLand = 100;
+    static public double speed = 1;
+    static public int lastLand = 1000;
 
     public void mainIcon(Stage primaryStage) {
         InputStream mainIconStream = getClass().getResourceAsStream("/main_icon.png");
