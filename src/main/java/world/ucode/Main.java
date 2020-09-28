@@ -12,11 +12,11 @@ import javafx.scene.control.Button;
 
 public class Main extends Application {
     static public Pane root = new Pane();
-    static public Scene scene = new Scene(root, 1200, 800);
+    static public Scene scene = new Scene(root, 1200, 600);
     static public Stage primStage;
     static public Button newGameButton = new Button();
     static public int maxLandX;
-    static public double speed = 1;
+    static public double speed = 0.3;
     static public int lastLand = 100;
 
     public void mainIcon(Stage primaryStage) {

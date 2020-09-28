@@ -21,7 +21,7 @@ public class GroundCreator extends Pane {
     landImage = randomGroundGenerator();
     landImageView = new ImageView(landImage);
 
-    setTranslateY(730);
+    setTranslateY(530);
     getChildren().add(landImageView);
   }
 

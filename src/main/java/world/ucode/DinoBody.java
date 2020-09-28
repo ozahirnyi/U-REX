@@ -15,7 +15,7 @@ public class DinoBody extends Pane{
   private static final int OFFSET_Y = 0;
   private static final int WIDTH = 88;
   private static final int HEIGHT = 143;
-  public int landY = 651;
+  public int landY = 451;
 
   public void activator() {
     final ImageView imageView = new ImageView(IMAGE);

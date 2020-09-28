@@ -59,6 +59,10 @@ public class WindowCreator {
         dinoMaxJump -= dinoGravity;
     }
 
+    private void cactusMover() {
+
+    }
+
     private void landsMover() {
         for (int i = 0; i < lands.size(); i++) {
             GroundCreator land = lands.get(i);
@@ -69,8 +73,14 @@ public class WindowCreator {
         }
         windowLastLand--;
         if (windowLastLand == 0) {
-//            Main.speed += 0.03;
+            Main.speed += 0.03;
             windowLastLand = Main.lastLand;
+        }
+    }
+
+    private void cactusCreator() {
+        for (int i = 0; i < 34; i++) {
+
         }
     }
 
