@@ -15,6 +15,7 @@ public class Main extends Application {
     static public Scene scene = new Scene(root, 1200, 600);
     static public Stage primStage;
     static public Button newGameButton = new Button();
+    static public boolean newGame = true;
     static public int maxLandX;
     static public double speed = 1;
     static public int lastLand = 1000;
@@ -41,6 +42,7 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 root.getChildren().remove(newGameButton);
+                newGame = true;
             }
         });
     }

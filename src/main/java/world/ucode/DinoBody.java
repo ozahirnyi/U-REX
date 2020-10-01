@@ -15,12 +15,13 @@ public class DinoBody extends Pane{
   private static final int OFFSET_Y = 0;
   private static final int WIDTH = 88;
   private static final int HEIGHT = 143;
+  public static Animation animation;
   public int landY = 451;
 
   public void activator() {
     final ImageView imageView = new ImageView(IMAGE);
     imageView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-    final Animation animation =
+    animation =
         new spriteAnimation(
             imageView, Duration.millis(900),
                 COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);

@@ -7,12 +7,16 @@ import javafx.scene.input.KeyCode;
 public class WindowCreator {
     static final private ArrayList<GroundCreator> lands = new ArrayList<>();
     static final private ArrayList<CactusCreator> cactuses = new ArrayList<>();
+    AnimationTimer animationTimer;
     static public int lastCactusX = 40;
     int windowLastLand = Main.lastLand;
     private int dinoMaxJump = 0;
     static final private int dinoGravity = 1;
 
     public void sceneCreator() {
+        Score score = new Score();
+        Main.root.getChildren().add(score);
+
         newGameBtnCreator();
 
         Main.root.getChildren().add(Main.newGameButton);
@@ -25,22 +29,29 @@ public class WindowCreator {
         cactusesCreator();
         dinoBody.toFront();
 
-    AnimationTimer animationTimer =
+    animationTimer =
         new AnimationTimer() {
           @Override
           public void handle(long now) {
             Main.scene.setOnKeyPressed(
                 event -> {
                   KeyCode keyCode = event.getCode();
-
                   if ((keyCode.equals(keyCode.SPACE) || keyCode.equals(keyCode.UP))
-                      && dinoBody.getTranslateY() == dinoBody.landY) dinoJump(dinoBody);
+                      && dinoBody.getTranslateY() == dinoBody.landY) {
+                      dinoJump(dinoBody);
+                      Main.speed = 1;
+                  }
                 });
             dinoBody.setTranslateY(dinoBody.getTranslateY() - dinoMaxJump);
             dinoDown();
             if (dinoBody.getTranslateY() >= dinoBody.landY) {
               dinoMaxJump = 0;
               dinoBody.setTranslateY(dinoBody.landY);
+            }
+            if (collisionCheck(dinoBody)) {
+                score.timer.stop();
+                animationTimer.stop();
+                dinoBody.animation.stop();
             }
             cactusMover();
             landsMover();
@@ -61,6 +72,22 @@ public class WindowCreator {
 
     private void dinoDown() {
         dinoMaxJump -= dinoGravity;
+    }
+
+    private boolean collisionCheck(DinoBody dinoBody) {
+        for (var it : cactuses) {
+            if (dinoBody.getTranslateX() >= it.getTranslateX()
+                    && dinoBody.getTranslateX() <= it.getTranslateX() + 51
+                    && dinoBody.getTranslateY() + 94 >= it.getTranslateY()) {
+                return true;
+            }
+            else if (dinoBody.getTranslateX() + 88 <= it.getTranslateX() + 49
+                    && dinoBody.getTranslateX() + 88 >= it.getTranslateX()
+                    && dinoBody.getTranslateY() + 94 >= it.getTranslateY()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void cactusMover() {
