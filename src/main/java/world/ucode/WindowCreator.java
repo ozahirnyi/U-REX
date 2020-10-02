@@ -2,33 +2,39 @@ package world.ucode;
 
 import javafx.animation.AnimationTimer;
 import java.util.ArrayList;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 
 public class WindowCreator {
     static final private ArrayList<GroundCreator> lands = new ArrayList<>();
     static final private ArrayList<CactusCreator> cactuses = new ArrayList<>();
+    static private Button replayBtn = new Button();
     AnimationTimer animationTimer;
     static public int lastCactusX = 40;
     int windowLastLand = Main.lastLand;
     private int dinoMaxJump = 0;
     static final private int dinoGravity = 1;
+    private DinoBody dinoBody = new DinoBody();
+    private Score score = new Score();
 
     public void sceneCreator() {
-        Score score = new Score();
-        Main.root.getChildren().add(score);
+    if (Main.newGame == true) {
+      Main.root.getChildren().add(score);
 
-        newGameBtnCreator();
+      newGameBtnCreator();
 
-        Main.root.getChildren().add(Main.newGameButton);
+      Main.root.getChildren().add(Main.newGameButton);
 
-        DinoBody dinoBody = new DinoBody();
-        dinoBody.activator();
-        Main.root.getChildren().add(dinoBody);
+      dinoBody.activator();
+      Main.root.getChildren().add(dinoBody);
 
-        landsCreator();
-        cactusesCreator();
-        dinoBody.toFront();
-
+      landsCreator();
+      cactusesCreator();
+      dinoBody.toFront();
+    }
     animationTimer =
         new AnimationTimer() {
           @Override
@@ -38,8 +44,8 @@ public class WindowCreator {
                   KeyCode keyCode = event.getCode();
                   if ((keyCode.equals(keyCode.SPACE) || keyCode.equals(keyCode.UP))
                       && dinoBody.getTranslateY() == dinoBody.landY) {
-                      dinoJump(dinoBody);
-                      Main.speed = 1;
+                    dinoJump(dinoBody);
+                    Main.speed = 1;
                   }
                 });
             dinoBody.setTranslateY(dinoBody.getTranslateY() - dinoMaxJump);
@@ -48,13 +54,14 @@ public class WindowCreator {
               dinoMaxJump = 0;
               dinoBody.setTranslateY(dinoBody.landY);
             }
-            if (collisionCheck(dinoBody)) {
-                score.timer.stop();
-                animationTimer.stop();
-                dinoBody.animation.stop();
-            }
-            cactusMover();
-            landsMover();
+              if (collisionCheck(dinoBody)) {
+                  score.timer.stop();
+                  animationTimer.stop();
+                  dinoBody.animation.stop();
+                  replay();
+              }
+              cactusMover();
+              landsMover();
           }
         };
 
@@ -63,6 +70,22 @@ public class WindowCreator {
         Main.scene.setRoot(Main.root);
         Main.primStage.setScene(Main.scene);
         Main.primStage.show();
+    }
+
+    private void replay() {
+        replayBtnCreator();
+        Main.newGame = false;
+        Main.root.getChildren().add(replayBtn);
+        replayBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Main.root.getChildren().remove(replayBtn);
+                score.counter = 0;
+                score.timer.play();
+                dinoBody.animation.play();
+                sceneCreator();
+            }
+        });
     }
 
     private void dinoJump(DinoBody dinoBody) {
@@ -79,11 +102,13 @@ public class WindowCreator {
             if (dinoBody.getTranslateX() >= it.getTranslateX()
                     && dinoBody.getTranslateX() <= it.getTranslateX() + 51
                     && dinoBody.getTranslateY() + 94 >= it.getTranslateY()) {
+                it.setTranslateX(it.getTranslateX() - 250);
                 return true;
             }
             else if (dinoBody.getTranslateX() + 88 <= it.getTranslateX() + 49
                     && dinoBody.getTranslateX() + 88 >= it.getTranslateX()
                     && dinoBody.getTranslateY() + 94 >= it.getTranslateY()) {
+                it.setTranslateX(it.getTranslateX() - 250);
                 return true;
             }
         }
@@ -91,15 +116,18 @@ public class WindowCreator {
     }
 
     private void cactusMover() {
-        for (int i = 0; i < 15; i++) {
-            CactusCreator cactusCreator = cactuses.get(i);
-            cactusCreator.cactusX -= 10 * Main.speed;
-            if (cactusCreator.cactusX < -71) {
-                cactusCreator.cactusX = cactusXgenerator(lastCactusX);
-                lastCactusX = (int)cactusCreator.cactusX;
-            }
-            cactusCreator.setTranslateX(cactusCreator.cactusX);
+    for (int i = 0; i < 15; i++) {
+      CactusCreator cactusCreator = cactuses.get(i);
+      if (cactusCreator.getTranslateX() >= -100) {
+        cactusCreator.cactusX -= 10 * Main.speed;
+
+        if (cactusCreator.cactusX < -100) {
+          cactusCreator.cactusX = cactusXgenerator(lastCactusX);
+          lastCactusX = (int) cactusCreator.cactusX;
         }
+        cactusCreator.setTranslateX(cactusCreator.cactusX);
+      }
+      }
     }
 
     private void landsMover() {
@@ -137,6 +165,12 @@ public class WindowCreator {
         }
         Main.maxLandX = 71 * 71;
         Main.root.getChildren().addAll(lands);
+    }
+
+    private void replayBtnCreator() {
+        replayBtn.setText("Replay?");
+        replayBtn.setTranslateX(525);
+        replayBtn.setTranslateY(300);
     }
 
     private void newGameBtnCreator() {

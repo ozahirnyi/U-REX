@@ -19,4 +19,4 @@ javafx {
     modules = [ 'javafx.controls' ]
 }
 
-mainClassName = 'world.ucode.Main'
+mainClassName = 'T.RAX.main/world.ucode.Main'
