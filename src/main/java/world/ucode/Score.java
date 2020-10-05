@@ -27,6 +27,9 @@ public class Score extends Pane{
                 new KeyFrame(Duration.millis(scoreDuration), new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent t) {
                         counter++;
+                        if (Main.newGame == true) {
+                            counter = 0;
+                        }
                         score.setText("Score: " + String.format("%05d", counter));
                     }
                 })

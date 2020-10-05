@@ -42,7 +42,7 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 root.getChildren().remove(newGameButton);
-                newGame = true;
+                newGame = false;
             }
         });
     }

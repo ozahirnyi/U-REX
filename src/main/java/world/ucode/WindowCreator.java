@@ -2,7 +2,6 @@ package world.ucode;
 
 import javafx.animation.AnimationTimer;
 import java.util.ArrayList;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -18,7 +17,7 @@ public class WindowCreator {
     private int dinoMaxJump = 0;
     static final private int dinoGravity = 1;
     private DinoBody dinoBody = new DinoBody();
-    private Score score = new Score();
+    public Score score = new Score();
 
     public void sceneCreator() {
     if (Main.newGame == true) {
@@ -54,14 +53,14 @@ public class WindowCreator {
               dinoMaxJump = 0;
               dinoBody.setTranslateY(dinoBody.landY);
             }
-              if (collisionCheck(dinoBody)) {
-                  score.timer.stop();
-                  animationTimer.stop();
-                  dinoBody.animation.stop();
-                  replay();
-              }
-              cactusMover();
-              landsMover();
+            if (collisionCheck(dinoBody) && Main.newGame == false) {
+                score.timer.stop();
+              animationTimer.stop();
+              dinoBody.animation.stop();
+              replay();
+            }
+            cactusMover();
+            landsMover();
           }
         };
 
@@ -74,7 +73,6 @@ public class WindowCreator {
 
     private void replay() {
         replayBtnCreator();
-        Main.newGame = false;
         Main.root.getChildren().add(replayBtn);
         replayBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
